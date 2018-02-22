@@ -1,0 +1,30 @@
+- name: Configure Drain
+  when: syslog_server is defined
+  command: clever-set-drain.sh
+  environment:
+    SYSLOG_UDP_SERVER: "{{ syslog_server }}"
+    CONFIGURATION_FILE: "{{ clever_login_file }}"
+
+- name: Configure Domain
+  when: domain is defined
+  command: clever-set-domain.sh
+  environment:
+    DOMAIN: "{{ domain }}"
+    CONFIGURATION_FILE: "{{ clever_login_file }}"
+
+- name: Push Environment
+  shell: "clever env import < {{ clever_app_confdir }}/env"
+  environment:
+    CONFIGURATION_FILE: "{{ clever_login_file }}"
+
+#TODO: Improve ssh-key validation
+- name: Accept Clever-Cloud servers
+  shell: "ssh-keyscan -H push-par-clevercloud-customers.services.clever-cloud.com >> ~/.ssh/known_hosts"
+
+- name: Push to Clever-Cloud to trigger deployment
+  command: "git push --force git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/{{ clever_app }}.git HEAD:refs/heads/master"
+
+- name: Wait until deployment completion
+  command: clever-wait-deploy.sh
+  environment:
+    CONFIGURATION_FILE: "{{ clever_login_file }}"

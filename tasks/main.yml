@@ -18,9 +18,9 @@
     - clever
     - clever-env
 
-- name: Include specific role
-  include_role: "{{ clever_app_role }}"
-  when: clever_app_role
+- name: Include specific tasks
+  include_tasks: "{{ clever_app_tasks }}"
+  when: clever_app_tasks is defined
   tags:
     - clever
     - clever-specific-role

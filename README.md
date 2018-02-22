@@ -20,7 +20,7 @@ Variables for the application
 - `clever_env`: a dict of environment variables for the application (without add_ons one already available), optional.
 - `clever_addons`: a list of dict describing addons enabled for the application from which we would use information during deploy, optional.<br/>
   Example: `{ name: pg, env_prefix: POSTGRESQL_ADDON }`
-- `clever_app_role`: role to be executed after environment and addons variables where gathered. Specific to an app, should be use to run migrations. Optional.
+- `clever_app_tasks`: tasks file to be executed after environment and addons variables where gathered. Specific to an app, should be use to run migrations. Optional.
 - `domain`: the domain from which the application should be reachable, optional
 - `syslog_server`: UDP Syslog server to be used as UDPSyslog drain for the application, optional. Example: `udp://198.51.100.51:12345`.
 

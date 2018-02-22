@@ -4,7 +4,7 @@
     dest: "{{ clever_app_confdir }}/env"
   no_log: true
 
-- name: Create add_ons variable file
+- name: Create addons variable file
   include_tasks: addon.yml
   vars:
     addon: "{{ item }}"

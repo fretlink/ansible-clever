@@ -1,9 +1,9 @@
 - name: Gather addon information for {{ addon.name }}
-  shell: "clever env | grep {{ addon.env_prefix }} | sed -e 's/{{ addon.env_prefix }}_//' -e 's/=/: \"/' -e 's/$/\"/' > .clever-cloud/{{ addon.name }}_env.yml"
+  shell: "clever env | grep {{ addon.env_prefix }} | sed -e 's/{{ addon.env_prefix }}_//' -e 's/=/: \"/' -e 's/$/\"/' > {{ clever_app_confdir }}/{{ addon.name }}_env.yml"
   environment:
     CONFIGURATION_FILE: "{{ clever_login_file }}"
 
 - name: Include addon var for {{ addon.name }}
   include_vars:
-    file: "{{ addon.name }}_env.yml"
+    file: "{{ clever_app_confdir }}/{{ addon.name }}_env.yml"
     name: "{{ addon.name }}"

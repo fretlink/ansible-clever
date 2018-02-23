@@ -1,0 +1,28 @@
+- name: Check if clever command is available in path and version
+  command: clever --version
+  register: clever_returned_version
+  ignore_errors: true
+
+- name: Ensure user path exists
+  file:
+    path: "{{ ansible_env.HOME }}/{{ clever_user_path }}"
+    state: directory
+
+- name: Download and install clever cli tools if necessary
+  unarchive:
+    remote_src: yes
+    extra_opts:
+      - "--strip-components=1"
+    src: https://clever-tools.cellar.services.clever-cloud.com/releases/{{ clever_cli_version }}/clever-tools-{{ clever_cli_version }}_linux.tar.gz
+    dest: "{{ ansible_env.HOME }}/{{ clever_user_path }}"
+  when: clever_returned_version|failed or clever_returned_version.stdout != clever_cli_version
+
+- name: Install helper scripts
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_env.HOME }}/{{ clever_user_path }}/{{ item }}"
+    mode: 0755
+  with_items:
+    - clever-set-domain.sh
+    - clever-set-drain.sh
+    - clever-wait-deploy.sh

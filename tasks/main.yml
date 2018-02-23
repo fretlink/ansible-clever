@@ -1,0 +1,32 @@
+---
+# tasks file for clever
+- name: Setup environment for clever
+  include_tasks: setup.yml
+  tags:
+    - clever
+    - clever-setup
+
+- name: Login to clever
+  include_tasks: login.yml
+  tags:
+    - clever
+    - clever-login
+
+- name: Manage environment
+  include_tasks: environment.yml
+  tags:
+    - clever
+    - clever-env
+
+- name: Include specific tasks
+  include_tasks: "{{ clever_app_tasks }}"
+  when: clever_app_tasks is defined
+  tags:
+    - clever
+    - clever-specific-role
+
+- name: Deploy app
+  include_tasks: deploy.yml
+  tags:
+   - clever
+   - clever-deploy

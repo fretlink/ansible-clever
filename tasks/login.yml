@@ -1,0 +1,15 @@
+- name: Create .clever-cloud directory
+  file:
+    path: "{{ clever_app_confdir }}"
+    state: directory
+
+- name: Fill the login file
+  template:
+    src: cleverlogin.j2
+    dest: "{{ clever_login_file }}"
+  no_log: true
+
+- name: Link app
+  shell: clever link {{ clever_app }}
+  environment:
+    CONFIGURATION_FILE: "{{ clever_login_file }}"

@@ -19,8 +19,8 @@
     - clever-env
 
 - name: Include specific tasks
-  include_tasks: "{{ clever_app_tasks }}"
-  when: clever_app_tasks is defined
+  include_tasks: "{{ clever_app_tasks_file }}"
+  when: clever_app_tasks_file is defined
   tags:
     - clever
     - clever-specific-role

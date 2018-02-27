@@ -1,2 +1,7 @@
 ---
 # vars file for clever
+clever_base_env:
+  CACHE_DEPENDENCIES: "true"
+  CC_RUN_COMMAND:     "~/.local/bin/{{ clever_entry_point }}"
+  ENABLE_METRICS:     "false"
+  PORT:               "8080"

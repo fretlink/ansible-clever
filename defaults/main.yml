@@ -6,7 +6,8 @@ clever_app_root: "{{ playbook_dir }}/.."
 clever_app_confdir: "{{ clever_app_root }}/.clever_cloud"
 clever_login_file: "{{ clever_app_confdir }}/login"
 
-clever_env: {}
+clever_entry_point: ""
+clever_extra_env: {}
 
 clever_addons: []
 # example

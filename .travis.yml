@@ -18,6 +18,9 @@ install:
   # Check ansible version
   - ansible --version
 
+  # Alias role name to mimic actual Galaxy deployment
+  - ln -s ansible-clever ../clever
+
   # Create ansible.cfg with correct roles_path
   - printf '[defaults]\nroles_path=../' >ansible.cfg
 

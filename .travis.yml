@@ -18,6 +18,9 @@ install:
   # Check ansible version
   - ansible --version
 
+  # Alias role name to mimic actual Galaxy deployment
+  - ln -s ansible-clever ../clever
+
   # Create ansible.cfg with correct roles_path
   - printf '[defaults]\nroles_path=../' >ansible.cfg
 
@@ -26,4 +29,4 @@ script:
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
 
 notifications:
-  webhooks: https://galaxy.ansible.com/api/v1/notifications/
+  slack: fretlink:n84rSINeJTLRjUTgXfB1aILX

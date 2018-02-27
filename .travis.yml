@@ -27,3 +27,4 @@ script:
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
+  slack: fretlink:n84rSINeJTLRjUTgXfB1aILX

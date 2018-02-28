@@ -7,7 +7,9 @@ clever_app_confdir: "{{ clever_app_root }}/.clever_cloud"
 clever_login_file: "{{ clever_app_confdir }}/login"
 
 clever_entry_point: ""
-clever_extra_env: {}
+clever_env: {}
+
+clever_metrics: false
 
 clever_addons: []
 # example

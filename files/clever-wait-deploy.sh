@@ -36,6 +36,7 @@ function check {
   while deploying "$commit" -a $timeout -gt 0
   do
     sleep $samplingTime
+    echo -n "."
     let "timeout-=$samplingTime"
   done
 

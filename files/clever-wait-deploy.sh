@@ -32,7 +32,7 @@ function check {
   done
 
   # Wait for completion
-  echo "Deployement in progress..."
+  echo "Deployment in progress..."
   while deploying "$commit" -a $timeout -gt 0
   do
     sleep $samplingTime

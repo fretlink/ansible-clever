@@ -24,7 +24,19 @@
 - name: Push to Clever-Cloud to trigger deployment
   command: "git push --force git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/{{ clever_app }}.git HEAD:refs/heads/master"
 
-- name: Wait until deployment completion
+- name: Watch deployment status
   command: clever-wait-deploy.sh
+  async: 900
+  poll: 0
+  register: long_command
   environment:
     CONFIGURATION_FILE: "{{ clever_login_file }}"
+
+# Waits up to 15 minutes
+- name: Wait for deployment completion
+  async_status:
+    jid: "{{ long_command.ansible_job_id }}"
+  register: job_result
+  until: job_result.finished
+  delay: 30
+  retries: 30

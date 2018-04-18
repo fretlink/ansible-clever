@@ -29,4 +29,4 @@ script:
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
 
 notifications:
-  slack: fretlink:n84rSINeJTLRjUTgXfB1aILX
+  slack: fretlink:pTIylIN7zkwRFuL3aHERmsbB

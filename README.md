@@ -1,4 +1,7 @@
 # ansible-clever
+
+[![Build Status](https://travis-ci.com/fretlink/ansible-clever.svg?token=D3nFpUxMu7vStDHwUNy4&branch=master)](https://travis-ci.com/fretlink/ansible-clever)
+
 Ansible role for clever cloud deployment
 =======
 Clever deploy

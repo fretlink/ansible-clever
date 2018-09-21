@@ -15,7 +15,7 @@
       - "--strip-components=1"
     src: https://clever-tools.cellar.services.clever-cloud.com/releases/{{ clever_cli_version }}/clever-tools-{{ clever_cli_version }}_linux.tar.gz
     dest: "{{ ansible_env.HOME }}/{{ clever_user_path }}"
-  when: clever_returned_version|failed or clever_returned_version.stdout != clever_cli_version
+  when: clever_returned_version is failed or clever_returned_version.stdout != clever_cli_version
 
 - name: Install helper scripts
   copy:

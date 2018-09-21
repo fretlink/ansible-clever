@@ -5,6 +5,7 @@ sudo: false
 
 install:
   - nix-env -i python2.7-ansible
+  - nix-env -i python2.7-ansible-lint
 
   # Check ansible version
   - ansible --version
@@ -18,6 +19,7 @@ install:
 script:
   # Basic role syntax check
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+  - ansible-lint .
 
 notifications:
   slack: fretlink:pTIylIN7zkwRFuL3aHERmsbB

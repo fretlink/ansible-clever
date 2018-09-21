@@ -5,6 +5,7 @@ sudo: false
 
 install:
   - nix-env -i python2.7-ansible
+  - nix-env -i python2.7-ansible-lint
 
   # Check ansible version
   - ansible --version

@@ -2,6 +2,7 @@
   shell: "clever env | grep {{ addon.env_prefix }} | sed -e 's/{{ addon.env_prefix }}_//' -e 's/=/: \"/' -e 's/$/\"/' > {{ clever_app_confdir }}/{{ addon.name }}_env.yml"
   environment:
     CONFIGURATION_FILE: "{{ clever_login_file }}"
+  changed_when: False
 
 - name: Include addon var for {{ addon.name }}
   include_vars:

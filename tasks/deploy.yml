@@ -16,13 +16,18 @@
   shell: "clever env import < {{ clever_app_confdir }}/env"
   environment:
     CONFIGURATION_FILE: "{{ clever_login_file }}"
+  changed_when: false
 
 #TODO: Improve ssh-key validation
 - name: Accept Clever-Cloud servers
   shell: "ssh-keyscan -H push-par-clevercloud-customers.services.clever-cloud.com >> ~/.ssh/known_hosts"
+  tags:
+    - skip_ansible_lint
 
 - name: Push to Clever-Cloud to trigger deployment
   command: "git push --force git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/{{ clever_app }}.git HEAD:refs/heads/master"
+  tags:
+    - skip_ansible_lint
 
 - name: Watch deployment status
   command: clever-wait-deploy.sh
@@ -31,6 +36,7 @@
   register: long_command
   environment:
     CONFIGURATION_FILE: "{{ clever_login_file }}"
+  changed_when: False
 
 # Waits up to 15 minutes
 - name: Wait for deployment completion

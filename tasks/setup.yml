@@ -2,6 +2,7 @@
   command: clever --version
   register: clever_returned_version
   ignore_errors: true
+  changed_when: False
 
 - name: Ensure user path exists
   file:

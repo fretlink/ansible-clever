@@ -26,6 +26,22 @@
 
 - name: Push to Clever-Cloud to trigger deployment
   command: "git push --force git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/{{ clever_app }}.git HEAD:refs/heads/master"
+  register: clever_git_push
+  ignore_errors: true
+  tags:
+    - skip_ansible_lint
+
+- name: First time push to Clever-Cloud needs a full git clone
+  command: "git fetch --unshallow"
+  when:
+    - clever_git_push is failed
+    - clever_git_push.stderr is search("shallow update not allowed")
+  tags:
+    - skip_ansible_lint
+
+- name: Push to Clever-Cloud to trigger deployment
+  command: "git push --force git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/{{ clever_app }}.git HEAD:refs/heads/master"
+  when: clever_git_push is failed
   tags:
     - skip_ansible_lint
 

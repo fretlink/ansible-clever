@@ -6,10 +6,10 @@
     CONFIGURATION_FILE: "{{ clever_login_file }}"
 
 - name: Configure Domain
-  when: domain is defined
+  when: domain is defined or clever_domain is defined
   command: clever-set-domain.sh
   environment:
-    DOMAIN: "{{ domain }}"
+    DOMAIN: "{{ clever_domain | default(domain) }}"
     CONFIGURATION_FILE: "{{ clever_login_file }}"
 
 - name: Push Environment

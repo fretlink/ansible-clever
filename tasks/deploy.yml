@@ -1,8 +1,8 @@
 - name: Configure Drain
-  when: syslog_server is defined
+  when: syslog_server is defined or clever_syslog_server is defined
   command: clever-set-drain.sh
   environment:
-    SYSLOG_UDP_SERVER: "{{ syslog_server }}"
+    SYSLOG_UDP_SERVER: "{{ clever_syslog_server | default(syslog_server) }}"
     CONFIGURATION_FILE: "{{ clever_login_file }}"
 
 - name: Configure Domain

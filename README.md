@@ -28,7 +28,8 @@ Variables for the application
 - `clever_app_tasks_file`: tasks file to be executed after environment and addons variables where gathered. Specific to an app, should be use to run migrations. Optional.
 - `clever_domain`: the domain from which the application should be reachable, optional.
 - _Obsolete_: `domain`: Same as above but was replaced by `clever_domain` since v1.4 of this role.
-- `syslog_server`: UDP Syslog server to be used as UDPSyslog drain for the application, optional. Example: `udp://198.51.100.51:12345`.
+- `clever_syslog_server`: UDP Syslog server to be used as UDPSyslog drain for the application, optional. Example: `udp://198.51.100.51:12345`.
+- _Obsolete_: `syslog_server`: Same as above but was replaced by `clever_syslog_server` since v1.5 of this role.
 - `clever_metrics`: a boolean to enable or disable metrics support. Optional, default to `false`.
 
 Variables specific to deployment, default should be fine:

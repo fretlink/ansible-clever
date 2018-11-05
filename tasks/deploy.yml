@@ -52,7 +52,7 @@
     - skip_ansible_lint
 
 - name: Watch deployment status
-  command: clever-wait-deploy.sh
+  command: "clever-wait-deploy.sh '{{ clever_app_root }}'"
   async: 900
   poll: 0
   register: long_command

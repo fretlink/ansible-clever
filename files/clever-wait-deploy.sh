@@ -47,4 +47,10 @@ function check {
   deployed "$commit"
 }
 
-check "$(git rev-parse HEAD)"
+function getHeadRev {
+  local chdir="$1/.git"
+
+  git --git-dir="$chdir" rev-parse HEAD
+}
+
+check "$(getHeadRev "$@")"

@@ -2,7 +2,7 @@
 # defaults file for clever
 clever_cli_version: 0.9.3
 clever_user_path: .local/bin
-clever_app_root: "{{ playbook_dir }}/.."
+clever_app_root: "{{ app_root | default(playbook_dir + '/..') }}"
 clever_app_confdir: "{{ clever_app_root }}/.clever_cloud"
 clever_login_file: "{{ clever_app_confdir }}/login"
 

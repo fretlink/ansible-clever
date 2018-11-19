@@ -6,6 +6,7 @@ sudo: false
 install:
   - nix-env -i python2.7-ansible
   - nix-env -i python2.7-ansible-lint
+  - nix-env -if ./dhall-1.18.nix
 
   # Check ansible version
   - ansible --version
@@ -20,6 +21,7 @@ script:
   # Basic role syntax check
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
   - ansible-lint .
+  - scripts/dhall_check.sh
 
 notifications:
   slack: fretlink:pTIylIN7zkwRFuL3aHERmsbB

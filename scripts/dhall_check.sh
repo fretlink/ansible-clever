@@ -13,6 +13,7 @@ go() {
   for file in $(find -type f -name "*.dhall"); do
     pushd $(dirname $file);
     cat $(basename $file) | dhall --explain resolve > /dev/null;
+    echo "Typechecking ${file}"
     if [ "$?" -ne "0" ]; then
       echo "Failed to resolve $file"
       ERROR=1;

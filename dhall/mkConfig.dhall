@@ -13,6 +13,7 @@ in  let nonifyEmpty =
 in    λ(vault : Vault)
     → λ(app : Text)
     → λ(entryPoint : Text)
+    → λ(metrics : Bool)
     → λ(syslogServer : Optional Text)
     → λ(domain : Optional Text)
     → λ(tasksFile : Optional Text)
@@ -34,7 +35,7 @@ in    λ(vault : Vault)
         , clever_entry_point =
             entryPoint
         , clever_metrics =
-            True
+            metrics
         , clever_addons =
             addons
         , clever_env =

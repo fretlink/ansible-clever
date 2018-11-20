@@ -30,7 +30,7 @@ Variables for the application
 - _Obsolete_: `domain`: Same as above but was replaced by `clever_domain` since v1.4 of this role.
 - `clever_syslog_server`: UDP Syslog server to be used as UDPSyslog drain for the application, optional. Example: `udp://198.51.100.51:12345`.
 - _Obsolete_: `syslog_server`: Same as above but was replaced by `clever_syslog_server` since v1.5 of this role.
-- `clever_metrics`: a boolean to enable or disable metrics support. Optional, default to `false`.
+- `clever_metrics`: a boolean to enable or disable metrics support. Optional, default to `true`.
 
 Variables specific to deployment, default should be fine:
 - `clever_cli_version`: Version of clever cli tools, default to `0.9.3`.

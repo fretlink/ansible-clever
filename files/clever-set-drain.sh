@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+set -e
 
 function checkDrain {
   clever drain | grep "${SYSLOG_UDP_SERVER}"

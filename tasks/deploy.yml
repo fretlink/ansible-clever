@@ -25,7 +25,7 @@
     - skip_ansible_lint
 
 - name: Deploy to Clever-Cloud
-  shell: "clever deploy"
+  shell: "clever deploy --force"
   args:
     chdir: "{{ clever_app_root }}"
   environment:
@@ -46,7 +46,7 @@
     - skip_ansible_lint
 
 - name: Deploy to Clever-Cloud
-  shell: "clever deploy"
+  shell: "clever deploy --force"
   args:
     chdir: "{{ clever_app_root }}"
   environment:

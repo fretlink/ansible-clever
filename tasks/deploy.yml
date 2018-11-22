@@ -41,17 +41,21 @@
     chdir: "{{ clever_app_root }}"
   when:
     - clever_deploy is failed
+    - clever_deploy.stderr is defined
     - clever_deploy.stderr is search("Failed to read git object")
   tags:
     - skip_ansible_lint
 
-- name: Deploy to Clever-Cloud
+- name: Deploy to Clever-Cloud (after first time push failed)
   shell: "clever deploy --force"
   args:
     chdir: "{{ clever_app_root }}"
   environment:
     CONFIGURATION_FILE: "{{ clever_login_file }}"
-  when: clever_deploy is failed
+  when:
+    - clever_deploy is failed
+    - clever_deploy.stderr is defined
+    - clever_deploy.stderr is search("Failed to read git object")
   register: clever_deploy
   ignore_errors: true
   tags:

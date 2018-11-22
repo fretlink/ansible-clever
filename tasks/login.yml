@@ -12,6 +12,7 @@
 - name: Link app
   command: clever link {{ clever_app }}
   args:
+    chdir: "{{ clever_app_root }}"
     creates: "{{ clever_app_root }}/.clever.json"
   environment:
     CONFIGURATION_FILE: "{{ clever_login_file }}"

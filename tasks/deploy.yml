@@ -31,8 +31,6 @@
   environment:
     CONFIGURATION_FILE: "{{ clever_login_file }}"
   register: clever_deploy
-  async: 900 # 15 minutes timeout
-  poll: 30
   ignore_errors: true
   tags:
     - skip_ansible_lint
@@ -55,8 +53,6 @@
     CONFIGURATION_FILE: "{{ clever_login_file }}"
   when: clever_deploy is failed
   register: clever_deploy
-  async: 900 # 15 minutes timeout
-  poll: 30
   ignore_errors: true
   tags:
     - skip_ansible_lint
@@ -67,7 +63,7 @@
 
 - name: Return deployment errors
   debug:
-    var: clever_deploy.stderr
+    var: clever_deploy.stderr|default(clever_deploy)
   when: clever_deploy is failed
 
 - name: Fail on deployment errors

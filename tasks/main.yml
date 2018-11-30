@@ -30,3 +30,9 @@
   tags:
    - clever
    - clever-deploy
+
+- name: Post deploy tasks
+  include_tasks: post_deploy.yml
+  tags:
+   - clever
+   - clever-deploy

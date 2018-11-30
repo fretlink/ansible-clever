@@ -1,0 +1,9 @@
+---
+- name: Retrieve clever env if needed
+  shell: "clever env > {{ clever_env_output_file }}"
+  args:
+    chdir: "{{ clever_app_root }}"
+    creates: "{{ clever_env_output_file }}"
+  environment:
+    CONFIGURATION_FILE: "{{ clever_login_file }}"
+  when: clever_env_output_file is defined

@@ -26,3 +26,4 @@
   with_items:
     - clever-set-domain.sh
     - clever-set-drain.sh
+    - clever-wait-deploy.sh

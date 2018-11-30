@@ -24,15 +24,11 @@
   tags:
     - skip_ansible_lint
 
-- name: Deploy to Clever-Cloud
-  shell: "clever deploy"
+- name: Push to Clever-Cloud to trigger deployment
+  command: "git push --force git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/{{ clever_app }}.git HEAD:refs/heads/master"
   args:
     chdir: "{{ clever_app_root }}"
-  environment:
-    CONFIGURATION_FILE: "{{ clever_login_file }}"
-  register: clever_deploy
-  async: 900 # 15 minutes timeout
-  poll: 30
+  register: clever_git_push
   ignore_errors: true
   tags:
     - skip_ansible_lint
@@ -42,35 +38,33 @@
   args:
     chdir: "{{ clever_app_root }}"
   when:
-    - clever_deploy is failed
-    - clever_deploy.stderr is search("Failed to read git object")
+    - clever_git_push is failed
+    - clever_git_push.stderr is search("shallow update not allowed")
   tags:
     - skip_ansible_lint
 
-- name: Deploy to Clever-Cloud
-  shell: "clever deploy"
+- name: Push to Clever-Cloud to trigger deployment
+  command: "git push --force git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/{{ clever_app }}.git HEAD:refs/heads/master"
   args:
     chdir: "{{ clever_app_root }}"
-  environment:
-    CONFIGURATION_FILE: "{{ clever_login_file }}"
-  when: clever_deploy is failed
-  register: clever_deploy
-  async: 900 # 15 minutes timeout
-  poll: 30
-  ignore_errors: true
+  when: clever_git_push is failed
   tags:
     - skip_ansible_lint
 
-- name: Return deployment logs
-  debug:
-    var: clever_deploy.stdout
+- name: Watch deployment status
+  command: "clever-wait-deploy.sh '{{ clever_app_root }}'"
+  async: 900
+  poll: 0
+  register: long_command
+  environment:
+    CONFIGURATION_FILE: "{{ clever_login_file }}"
+  changed_when: False
 
-- name: Return deployment errors
-  debug:
-    var: clever_deploy.stderr
-  when: clever_deploy is failed
-
-- name: Fail on deployment errors
-  fail:
-    msg: "The clever deployment failed! Please check logs above."
-  when: clever_deploy is failed
+# Waits up to 15 minutes
+- name: Wait for deployment completion
+  async_status:
+    jid: "{{ long_command.ansible_job_id }}"
+  register: job_result
+  until: job_result.finished
+  delay: 30
+  retries: 30

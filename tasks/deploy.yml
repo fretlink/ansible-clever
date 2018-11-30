@@ -71,6 +71,5 @@
   when: clever_deploy is failed
 
 - name: Fail on deployment errors
-  fail:
-    msg: "The clever deployment failed! Please check logs above."
+  fail: "The clever deployment failed! Please check logs above."
   when: clever_deploy is failed

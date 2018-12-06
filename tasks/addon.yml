@@ -1,5 +1,7 @@
 - name: Gather addon information for {{ addon.name }}
   shell: "clever env | grep {{ addon.env_prefix }} | sed -e 's/{{ addon.env_prefix }}_//' -e 's/=/: \"/' -e 's/$/\"/' > {{ clever_app_confdir }}/{{ addon.name }}_env.yml"
+  args:
+    chdir: "{{ clever_app_root }}"
   environment:
     CONFIGURATION_FILE: "{{ clever_login_file }}"
   changed_when: False

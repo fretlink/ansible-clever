@@ -20,12 +20,13 @@ Variables for the application
 - `clever_token`: clever_cloud token, mandatory.
 - `clever_secret`: clever_cloud secret, mandatory.
 - `clever_app`: the id of the app to link, mandatory.
-- `clever_entry_point`: the executable name to be executed by clever cloud, mandatory
 - `clever_env`: a dict of environment variables for the application (without add_ons one already available), optional.
 - `clever_base_env`: a dict set in vars/main.yml with safe default and mandatory variables for an app to be run on clever. ` clever_base_env | combine(clever_env)` is passed to `clever env` command
 - `clever_addons`: a list of dict describing addons enabled for the application from which we would use information during deploy, optional.<br/>
   Example: `{ name: pg, env_prefix: POSTGRESQL_ADDON }`
 - `clever_app_tasks_file`: tasks file to be executed after environment and addons variables where gathered. Specific to an app, should be use to run migrations. Optional.
+- `clever_haskell_entry_point`: the haskell executable name to be executed by clever cloud, optional.
+- _Obsolete_: `clever_entry_point`: Same as above but was replaced by `clever_haskell_entry_point` since v1.14 of this role.
 - `clever_domain`: the domain from which the application should be reachable, optional.
 - _Obsolete_: `domain`: Same as above but was replaced by `clever_domain` since v1.4 of this role.
 - `clever_syslog_server`: UDP Syslog server to be used as UDPSyslog drain for the application, optional. Example: `udp://198.51.100.51:12345`.

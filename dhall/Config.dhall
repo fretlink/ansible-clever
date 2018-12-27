@@ -1,4 +1,4 @@
-    let Addon = ./addon/Addon.dhall
+let Addon = ./addon/Addon.dhall
 
 in    λ(Environment : Type)
     → { clever_app :
@@ -15,7 +15,7 @@ in    λ(Environment : Type)
           Text
       , clever_app_tasks_file :
           Text
-      , clever_entry_point :
+      , clever_haskell_entry_point :
           Text
       , clever_metrics :
           Bool

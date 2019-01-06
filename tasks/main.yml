@@ -25,11 +25,12 @@
 - name: Deploy app
   import_tasks: deploy.yml
   tags:
-   - clever
-   - clever-deploy
+    - clever
+    - clever-deploy
 
 - name: Post deploy tasks
   import_tasks: post_deploy.yml
   tags:
-   - clever
-   - clever-deploy
+    - clever
+    - clever-deploy
+    - clever-env

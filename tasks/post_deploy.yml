@@ -1,6 +1,6 @@
 ---
 - name: Retrieve clever env if needed
-  shell: "clever env > {{ clever_env_output_file }}"
+  shell: "clever env --add-export > {{ clever_env_output_file }}"
   args:
     chdir: "{{ clever_app_root }}"
     creates: "{{ clever_env_output_file }}"

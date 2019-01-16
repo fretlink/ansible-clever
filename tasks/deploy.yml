@@ -80,7 +80,41 @@
     - clever_deploy is failed
     - clever_deploy.stderr is defined
 
+- shell: clever activity
+  args:
+    chdir: "{{ clever_app_root }}"
+  environment:
+    CONFIGURATION_FILE: "{{ clever_login_file }}"
+  changed_when: false
+  register: clever_activity_result
+
+- debug:
+    var: clever_activity_result.stdout_lines
+
+- shell: git show -q --format=format:%H HEAD
+  args:
+    chdir: "{{ clever_app_root }}"
+  changed_when: false
+  register: current_commit_sha
+
+# ####
+# Expects all configuration to be located in the project's repository.
+# Making a git commit bound to the same *configuration* and *executable* version.
+# ##
+- name: Fail if current commit is not the last deployed one
+  fail:
+    msg: "The clever deployment failed! Please check latest deploy activity logs above."
+  when:
+    - clever_deploy is failed
+    - clever_deploy.stderr is defined
+    - clever_deploy.stderr is search("application is up-to-date")
+    - clever_activity_valid_deploy_keyword in clever_activity_result.stdout_lines[-1]
+    - current_commit_sha.stdout_lines[-1] in clever_activity_result.stdout_lines[-1]
+
 - name: Fail on deployment errors
   fail:
     msg: "The clever deployment failed! Please check logs above."
-  when: clever_deploy is failed
+  when:
+    - clever_deploy is failed
+    - clever_deploy.stderr is defined
+    - clever_deploy.stderr is not search("application is up-to-date")

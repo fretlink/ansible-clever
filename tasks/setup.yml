@@ -14,8 +14,11 @@
     remote_src: yes
     extra_opts:
       - "--strip-components=1"
-    src: https://clever-tools.cellar.services.clever-cloud.com/releases/{{ clever_cli_version }}/clever-tools-{{ clever_cli_version }}_linux.tar.gz
+    src: "{{ clever_repo }}/{{ clever_cli_version }}/{{ clever_tools_archive }}"
     dest: "{{ ansible_env.HOME }}/{{ clever_user_path }}"
+  vars:
+    clever_repo: https://clever-tools.cellar.services.clever-cloud.com/releases
+    clever_tools_archive: "{{ clever_cli_version }}/clever-tools-{{ clever_cli_version }}_linux.tar.gz"
   when: clever_returned_version is failed or clever_returned_version.stdout != clever_cli_version
 
 - name: Install helper scripts

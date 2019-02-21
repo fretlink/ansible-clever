@@ -1,6 +1,6 @@
 - name: Configure Drain
   when: syslog_server is defined or clever_syslog_server is defined
-  command: clever-set-drain.sh
+  command: "{{ ansible_env.HOME }}/{{ clever_user_path }}clever-set-drain.sh"
   args:
     chdir: "{{ clever_app_root }}"
   environment:
@@ -9,7 +9,7 @@
 
 - name: Configure Domain
   when: domain is defined or clever_domain is defined
-  command: clever-set-domain.sh
+  command: "{{ ansible_env.HOME }}/{{ clever_user_path }}/clever-set-domain.sh"
   args:
     chdir: "{{ clever_app_root }}"
   environment:
@@ -80,7 +80,8 @@
     - clever_deploy is failed
     - clever_deploy.stderr is defined
 
-- shell: clever activity
+- name: Retrieve clever activity
+  command: clever activity
   args:
     chdir: "{{ clever_app_root }}"
   environment:
@@ -88,12 +89,15 @@
   changed_when: false
   register: clever_activity_result
 
-- debug:
+- name: Display clever activity
+  debug:
     var: clever_activity_result.stdout_lines
 
-- shell: git show -q --format=format:%H HEAD
+- name: Get current commit sha
+  command: git show -q --format=format:%H HEAD
   args:
     chdir: "{{ clever_app_root }}"
+    warn: False
   changed_when: false
   register: current_commit_sha
 

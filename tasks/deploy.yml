@@ -1,6 +1,6 @@
 - name: Configure Drain
   when: syslog_server is defined or clever_syslog_server is defined
-  command: "{{ ansible_env.HOME }}/{{ clever_user_path }}clever-set-drain.sh"
+  command: "{{ ansible_env.HOME }}/{{ clever_user_path }}/clever-set-drain.sh"
   args:
     chdir: "{{ clever_app_root }}"
   environment:

@@ -20,7 +20,9 @@
 
 - name: Include specific tasks
   include_tasks: "{{ clever_app_tasks_file }}"
-  when: clever_app_tasks_file is defined
+  when:
+    - clever_app_tasks_file is defined
+    - clever_app_tasks_file
 
 - name: Deploy app
   import_tasks: deploy.yml

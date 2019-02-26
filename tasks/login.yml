@@ -9,10 +9,15 @@
     dest: "{{ clever_login_file }}"
   no_log: true
 
+- name: Make sure no apps are already linked
+  file:
+    state: absent
+    path: "{{ clever_app_root }}/.clever.json"
+
 - name: Link app
   command: clever link {{ clever_app }}
   args:
     chdir: "{{ clever_app_root }}"
-  changed_when: true
+    creates: "{{ clever_app_root }}/.clever.json"
   environment:
     CONFIGURATION_FILE: "{{ clever_login_file }}"

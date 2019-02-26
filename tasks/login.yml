@@ -13,6 +13,6 @@
   command: clever link {{ clever_app }}
   args:
     chdir: "{{ clever_app_root }}"
-  changed_when: true
+    creates: "{{ clever_app_root }}/.clever.json"
   environment:
     CONFIGURATION_FILE: "{{ clever_login_file }}"

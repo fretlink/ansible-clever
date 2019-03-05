@@ -1,5 +1,6 @@
 - name: Gather addon information for {{ addon.name }}
   shell: >
+    set -o pipefail &&
     clever env | grep {{ addon.env_prefix }}
     | sed -e 's/{{ addon.env_prefix }}_//' -e 's/=/: \"/' -e 's/$/\"/'
     > {{ clever_app_confdir }}/{{ addon.name }}_env.yml

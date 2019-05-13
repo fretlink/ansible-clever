@@ -112,10 +112,12 @@
     - clever_deploy is failed
     - clever_deploy.stderr is defined
     - clever_deploy.stderr is search("application is up-to-date")
-    - clever_activity_valid_deploy_keyword in clever_activity_result.stdout_lines[-1]
-    - current_commit_sha.stdout_lines[-1] in clever_activity_result.stdout_lines[-1]
+    - |
+      (current_commit_sha.stdout_lines[-1] not in clever_activity_result.stdout_lines[-1])
+      or
+      (clever_activity_valid_deploy_keyword not in clever_activity_result.stdout_lines[-1])
 
-- name: Fail on deployment errors
+- name: Fail on any other deployment errors
   fail:
     msg: "The clever deployment failed! Please check logs above."
   when:

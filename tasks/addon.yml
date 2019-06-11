@@ -6,6 +6,7 @@
     > {{ clever_app_confdir }}/{{ addon.name }}_env.yml
   args:
     chdir: "{{ clever_app_root }}"
+    executable: "bash"
   environment:
     CONFIGURATION_FILE: "{{ clever_login_file }}"
   changed_when: False

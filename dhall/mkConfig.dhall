@@ -7,12 +7,6 @@ let Addon = ./addon/Addon.dhall
 in    λ(vault : Vault)
     → λ(app : Text)
     → λ(organization : Text)
-    → λ(entryPoint : Optional Text)
-    → λ(metrics : Bool)
-    → λ(syslogServer : Optional Text)
-    → λ(domain : Optional Text)
-    → λ(tasksFile : Optional Text)
-    → λ(addons : List Addon)
     →   { clever_app =
             app
         , clever_orga =
@@ -22,17 +16,17 @@ in    λ(vault : Vault)
         , clever_token =
             vault.token
         , clever_syslog_server =
-            syslogServer
+            None Text
         , clever_domain =
-            domain
+            None Text
         , clever_app_tasks_file =
-            tasksFile
+            None Text
         , clever_haskell_entry_point =
-            entryPoint
+            None Text
         , clever_metrics =
-            metrics
+            True
         , clever_addons =
-            addons
+            [] : List Addon
         , clever_env =
             {=}
         }

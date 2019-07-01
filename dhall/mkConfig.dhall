@@ -4,10 +4,6 @@ let Vault = ./Vault.dhall
 
 let Addon = ./addon/Addon.dhall
 
-let nonifyEmpty =
-        λ(opt : Optional Text)
-      → Optional/fold Text opt Text (λ(x : Text) → x) "None"
-
 in    λ(vault : Vault)
     → λ(app : Text)
     → λ(organization : Text)
@@ -26,13 +22,13 @@ in    λ(vault : Vault)
         , clever_token =
             vault.token
         , clever_syslog_server =
-            nonifyEmpty syslogServer
+            syslogServer
         , clever_domain =
-            nonifyEmpty domain
+            domain
         , clever_app_tasks_file =
-            nonifyEmpty tasksFile
+            tasksFile
         , clever_haskell_entry_point =
-            nonifyEmpty entryPoint
+            entryPoint
         , clever_metrics =
             metrics
         , clever_addons =

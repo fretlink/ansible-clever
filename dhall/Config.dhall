@@ -10,13 +10,13 @@ in    λ(Environment : Type)
       , clever_token :
           Text
       , clever_syslog_server :
-          Text
+          Optional Text
       , clever_domain :
-          Text
+          Optional Text
       , clever_app_tasks_file :
-          Text
+          Optional Text
       , clever_haskell_entry_point :
-          Text
+          Optional Text
       , clever_metrics :
           Bool
       , clever_addons :

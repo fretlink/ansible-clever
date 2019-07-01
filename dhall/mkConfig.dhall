@@ -1,17 +1,18 @@
 let Config = ./Config.dhall
 
 in  let Vault = ./Vault.dhall
-
+    
     in  let Addon = ./addon/Addon.dhall
-
+        
         in  let Environment = ./environment/Environment.dhall
-
+            
             in  let nonifyEmpty =
                         λ(opt : Optional Text)
                       → Optional/fold Text opt Text (λ(x : Text) → x) "None"
-
+                
                 in    λ(vault : Vault)
                     → λ(app : Text)
+                    → λ(organization : Text)
                     → λ(entryPoint : Optional Text)
                     → λ(metrics : Bool)
                     → λ(syslogServer : Optional Text)
@@ -21,7 +22,7 @@ in  let Vault = ./Vault.dhall
                     →   { clever_app =
                             app
                         , clever_orga =
-                            vault.organization
+                            organization
                         , clever_secret =
                             vault.secret
                         , clever_token =

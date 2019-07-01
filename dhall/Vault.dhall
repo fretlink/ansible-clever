@@ -1,1 +1,1 @@
-{ organization : Text, secret : Text, token : Text }
+{ token : Text, secret : Text, sshKey : Text }

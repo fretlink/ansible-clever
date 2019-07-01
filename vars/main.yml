@@ -5,7 +5,7 @@ clever_base_env:
   # Haskell only
   # https://www.clever-cloud.com/doc/get-help/reference-environment-variables/#haskell
   CC_RUN_COMMAND:     "~/.local/bin/{{ clever_haskell_entry_point }}"
-  ENABLE_METRICS:     "{{ clever_metrics | lower }}"
+  CC_DISABLE_METRICS: "{{ clever_metrics is defined | ternary(not clever_metrics, clever_disable_metrics) | lower }}"
   PORT:               "8080"
 
 clever_activity_valid_deploy_keyword: " OK "

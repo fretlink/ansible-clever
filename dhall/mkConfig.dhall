@@ -23,8 +23,8 @@ in    λ(vault : Vault)
             None Text
         , clever_haskell_entry_point =
             None Text
-        , clever_metrics =
-            True
+        , clever_disable_metrics =
+            False
         , clever_addons =
             [] : List Addon
         , clever_env =

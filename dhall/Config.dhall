@@ -17,7 +17,7 @@ in    λ(Environment : Type)
           Optional Text
       , clever_haskell_entry_point :
           Optional Text
-      , clever_metrics :
+      , clever_disable_metrics :
           Bool
       , clever_addons :
           List Addon

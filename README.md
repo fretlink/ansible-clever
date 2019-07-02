@@ -7,7 +7,8 @@ Ansible role for clever cloud deployment
 Clever deploy
 =========
 
-This roles deploy an haskell app on clever cloud (https://www.clever-cloud.com).
+This role deploys applications on clever cloud (https://www.clever-cloud.com).
+It handles the publication over git, as well as domain names, environment variables and log drains configuration.
 
 Requirements
 ------------
@@ -31,7 +32,8 @@ Variables for the application
 - _Obsolete_: `domain`: Same as above but was replaced by `clever_domain` since v1.4 of this role.
 - `clever_syslog_server`: UDP Syslog server to be used as UDPSyslog drain for the application, optional. Example: `udp://198.51.100.51:12345`.
 - _Obsolete_: `syslog_server`: Same as above but was replaced by `clever_syslog_server` since v1.5 of this role.
-- `clever_metrics`: a boolean to enable or disable metrics support. Optional, default to `true`.
+- _Obsolete_: `clever_metrics`: metrics used to be disabled by default. Now they are enabled by default and can be explicitly disabled with `clever_disable_metrics`.
+- `clever_disable_metrics`: a boolean to disable metrics support. Optional, default to `false`.
 - `clever_env_output_file`: as a post deploy task you might need to retrieve the full Clever environment configuration (i.e. with addon env variables). If this variable is set to a filename then the env will be retrieved after a successful deploy inside this file. Optional.
 
 Variables specific to deployment, default should be fine:

@@ -9,7 +9,7 @@ clever_login_file: "{{ clever_app_confdir }}/login"
 clever_haskell_entry_point: "{{ clever_entry_point | default('') }}"
 clever_env: {}
 
-clever_metrics: true
+clever_disable_metrics: false
 
 clever_addons: []
 # example

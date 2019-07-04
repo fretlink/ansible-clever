@@ -1,1 +1,1 @@
-{ token : Text, secret : Text, sshKey : Text }
+{ token : Text, secret : Text }

@@ -31,17 +31,17 @@
     - skip_ansible_lint
 
 - name: Deploy to Clever-Cloud
-  shell: "clever deploy --force"
+  command: "git push --force git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/{{ clever_app }}.git HEAD:refs/heads/master"
   args:
     chdir: "{{ clever_app_root }}"
-  environment:
-    CONFIGURATION_FILE: "{{ clever_login_file }}"
   register: clever_deploy
-  async: 900 # 15 minutes timeout
-  poll: 30
   ignore_errors: true
   tags:
     - skip_ansible_lint
+
+##################################################################
+# Re-deploy only if its the first clever deploy for that project #
+##################################################################
 
 - name: First time push to Clever-Cloud needs a full git clone
   command: "git fetch --unshallow"
@@ -55,72 +55,43 @@
     - skip_ansible_lint
 
 - name: Deploy to Clever-Cloud
-  shell: "clever deploy --force"
+  command: "git push --force git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/{{ clever_app }}.git HEAD:refs/heads/master"
   args:
     chdir: "{{ clever_app_root }}"
-  environment:
-    CONFIGURATION_FILE: "{{ clever_login_file }}"
-  when: clever_deploy is failed
+  when:
+    - clever_deploy is failed
+    - clever_deploy.stderr is defined
+    - clever_deploy.stderr is search("Failed to read git object")
   register: clever_deploy
-  async: 900 # 15 minutes timeout
-  poll: 30
-  ignore_errors: true
   tags:
     - skip_ansible_lint
 
-- name: Return deployment logs
-  debug:
-    var: clever_deploy.stdout
-  when: clever_deploy.stdout is defined
+##############################################################################
+# Poll deployment status from 'clever activity' command.                     #
+# 'clever deploy' command is not yet 100% reliable to get a blocking command #
+# until the deployment is over. Hence the need for a custom waiting script.  #
+##############################################################################
 
-- name: Return deployment errors
-  debug:
-    var: clever_deploy.stderr
-  when:
-    - clever_deploy is failed
-    - clever_deploy.stderr is defined
-
-- name: Retrieve clever activity
-  command: clever activity
+- name: Watch deployment status
+  command: "{{ ansible_env.HOME }}/{{ clever_user_path }}/clever-wait-deploy.sh"
   args:
     chdir: "{{ clever_app_root }}"
   environment:
     CONFIGURATION_FILE: "{{ clever_login_file }}"
-  changed_when: false
-  register: clever_activity_result
+  async: 2400 # 40 minutes
+  poll: 0
+  register: long_command
+  changed_when: False
 
-- name: Display clever activity
+- name: Wait 40 minutes for deployment completion
+  async_status:
+    jid: "{{ long_command.ansible_job_id }}"
+  register: job_result
+  until: job_result.finished
+  delay: 30
+  retries: 80 # 40 minutes (80 * 30 secs delay)
+
+# Output of waiting script stdout
+- name: Output waiting script logs
   debug:
-    var: clever_activity_result.stdout_lines
-
-- name: Get current commit sha
-  command: git show -q --format=format:%H HEAD
-  args:
-    chdir: "{{ clever_app_root }}"
-    warn: False
-  changed_when: false
-  register: current_commit_sha
-
-# ####
-# Expects all configuration to be located in the project's repository.
-# Making a git commit bound to the same *configuration* and *executable* version.
-# ##
-- name: Fail if current commit is not the last deployed one
-  fail:
-    msg: "The clever deployment failed! Please check latest deploy activity logs above."
-  when:
-    - clever_deploy is failed
-    - clever_deploy.stderr is defined
-    - clever_deploy.stderr is search("application is up-to-date")
-    - |
-      (current_commit_sha.stdout_lines[-1] not in clever_activity_result.stdout_lines[-1])
-      or
-      (clever_activity_valid_deploy_keyword not in clever_activity_result.stdout_lines[-1])
-
-- name: Fail on any other deployment errors
-  fail:
-    msg: "The clever deployment failed! Please check logs above."
-  when:
-    - clever_deploy is failed
-    - clever_deploy.stderr is defined
-    - clever_deploy.stderr is not search("application is up-to-date")
+    var: job_result.stdout_lines

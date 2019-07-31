@@ -1,25 +1,19 @@
 #!/usr/bin/env bash
 
-pushd () {
-  command pushd "$@" > /dev/null
-}
-
-popd () {
-  command popd "$@" > /dev/null
-}
+set -eo pipefail
 
 go() {
-  local ERROR=0;
-  for file in $(find -type f -name "*.dhall"); do
-    pushd $(dirname $file);
-    cat $(basename $file) | dhall --explain resolve > /dev/null;
+  local ERROR=0
+  while IFS= read -r -d '' file
+  do
+    cd "$(dirname "$file")" || exit
     echo "Typechecking ${file}"
-    if [ "$?" -ne "0" ]; then
+    if ! dhall --explain resolve < "$(basename "$file")" >/dev/null; then
       echo "Failed to resolve $file"
-      ERROR=1;
+      ERROR=1
     fi;
-    popd;
-  done;
+    cd - >/dev/null || exit
+  done <   <(find . -type f -name "*.dhall" -print0)
   exit $ERROR;
 }
 

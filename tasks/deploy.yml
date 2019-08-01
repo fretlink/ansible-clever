@@ -88,10 +88,21 @@
     jid: "{{ long_command.ansible_job_id }}"
   register: job_result
   until: job_result.finished
+  ignore_errors: true
   delay: 30
   retries: 80 # 40 minutes (80 * 30 secs delay)
 
-# Output of waiting script stdout
-- name: Output waiting script logs
+- name: Waiting script logs (stdout)
   debug:
     var: job_result.stdout_lines
+  when: job_result.stdout_lines is defined
+
+- name: Waiting script logs (stderr)
+  debug:
+    var: job_result.stderr_lines
+  when: job_result.stderr_lines is defined
+
+- name: Fail in case of timeout or failure
+  fail:
+    msg: "Deployment failed. Please check logs above."
+  when: not job_result.finished or not job_result.rc == 0

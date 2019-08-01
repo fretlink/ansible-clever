@@ -4,18 +4,35 @@ set -ueo pipefail
 
 VERBOSE=${VERBOSE:-}
 lastCleverActivity=""
+timeout=2300 # 100 seconds less than the Ansible tasks' timeout
+startTime=$(date +%s)
 
 function cleverActivity {
   lastCleverActivity=$(clever activity)
 }
 
 function ensure {
-  if [ "$?" == "1" ]
-  then
-    echo "✗ Deployment failed!"
-  fi
+  local lastReturnCode="$?"
+
   VERBOSE=true
   verbose
+
+  if isNotTimeout
+  then
+    if [ "$lastReturnCode" == "0" ]
+    then
+      echo "✓ Deployment done."
+    else
+      echo "✗ Deployment failed!"
+    fi
+  else
+    echo "⁈ Deployment timeout... Please check clever logs"
+    exit 1
+  fi
+}
+
+function isNotTimeout {
+  [ $(($(date +%s) - startTime)) -lt $timeout ]
 }
 
 trap ensure EXIT ERR
@@ -52,7 +69,7 @@ function check {
   local samplingTime=5
 
   echo "️▫ Waiting for deployment to start..."
-  while inactive "$commit"
+  while inactive "$commit" && isNotTimeout
   do
     verbose
     sleep $samplingTime
@@ -60,14 +77,13 @@ function check {
 
   # Wait for completion
   echo "▪ Deployment in progress..."
-  while deploying "$commit"
+  while deploying "$commit" && isNotTimeout
   do
     verbose
     sleep $samplingTime
   done
 
   deployed "$commit"
-  echo "✓ Deployment done."
 }
 
 function getHeadRev {

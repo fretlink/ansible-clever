@@ -3,7 +3,8 @@
 set -e
 
 function checkDomain {
-  clever domain | grep --ignore-case "${DOMAIN}"
+  # DNS domain names are case insensitive
+  clever domain | grep -i "${DOMAIN}"
 }
 
 function setDomain {

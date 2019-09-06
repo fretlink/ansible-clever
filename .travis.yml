@@ -4,7 +4,7 @@ language: nix
 sudo: false
 
 install:
-  - nix-env -i python2.7-ansible python2.7-ansible-lint ShellCheck-0.6.0
+  - nix-env -i python2.7-ansible python2.7-ansible-lint ShellCheck-0.7.0
   - nix-env -if ./dhall-1.21.0.nix
 
   # Check ansible version

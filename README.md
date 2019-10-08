@@ -35,6 +35,7 @@ Variables for the application
 - _Obsolete_: `clever_metrics`: metrics used to be disabled by default. Now they are enabled by default and can be explicitly disabled with `clever_disable_metrics`.
 - `clever_disable_metrics`: a boolean to disable metrics support. Optional, default to `false`.
 - `clever_env_output_file`: as a post deploy task you might need to retrieve the full Clever environment configuration (i.e. with addon env variables). If this variable is set to a filename then the env will be retrieved after a successful deploy inside this file. Optional.
+- `clever_build_flavor`: an optional text value used to configure the size of the dedicated build instance (for instance `S` or `XL`). If not defined, it delegates to clever cloud default behaviour. Setting `disabled` disables the dedicated build instance altogether.
 
 Variables specific to deployment, default should be fine:
 - `clever_cli_version`: Version of clever cli tools, default to `0.9.3`.

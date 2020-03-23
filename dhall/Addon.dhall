@@ -1,6 +1,14 @@
-let Addon = < Postgresql : { name : Text, env_prefix : Text } >
+let Addon =
+      < Postgresql : { name : Text, env_prefix : Text }
+      | Mysql : { name : Text, env_prefix : Text }
+      | Redis : { name : Text, env_prefix : Text }
+      >
 
 let postgresql =
       Addon.Postgresql { name = "pg", env_prefix = "POSTGRESQL_ADDON" }
 
-in  { Type = Addon, postgresql = postgresql }
+let mysql = Addon.Mysql { name = "mysql", env_prefix = "MYSQL_ADDON" }
+
+let redis = Addon.Redis { name = "redis", env_prefix = "REDIS" }
+
+in  { Type = Addon, postgresql = postgresql, mysql = mysql, redis = redis }

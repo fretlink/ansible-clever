@@ -2,9 +2,6 @@
 # vars file for clever
 clever_base_env:
   CACHE_DEPENDENCIES: "true"
-  # Haskell only
-  # https://www.clever-cloud.com/doc/get-help/reference-environment-variables/#haskell
-  CC_RUN_COMMAND:     "~/.local/bin/{{ clever_haskell_entry_point }}"
   CC_DISABLE_METRICS: "{{ clever_disable_metrics | lower }}"
   PORT:               "8080"
 

@@ -1,11 +1,11 @@
-- name: Create environment file
-  template:
-    src: env.j2
-    dest: "{{ clever_app_confdir }}/env"
-  no_log: true
-
 - name: Create addons variable file
   include_tasks: addon.yml
   vars:
     addon: "{{ item }}"
   with_items: "{{ clever_addons }}"
+
+- name: Create environment file
+  template:
+    src: env.j2
+    dest: "{{ clever_app_confdir }}/env"
+  no_log: true

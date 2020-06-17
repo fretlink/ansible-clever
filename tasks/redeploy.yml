@@ -1,0 +1,33 @@
+---
+##################################################################
+# Re-deploy only if its the first clever deploy for that project #
+##################################################################
+
+- name: First time push to Clever-Cloud needs a full git clone
+  command: "git fetch --unshallow"
+  args:
+    chdir: "{{ clever_app_root }}"
+  tags:
+    - skip_ansible_lint
+
+- name: Deploy to Clever-Cloud
+  shell: "clever deploy --force"
+  args:
+    chdir: "{{ clever_app_root }}"
+  environment:
+    CONFIGURATION_FILE: "{{ clever_login_file }}"
+  async: 2400 # 40 minutes
+  poll: 0
+  ignore_errors: true
+  register: clever_deploy
+  tags:
+    - skip_ansible_lint
+
+- name: Wait up to 40 minutes for deployment completion
+  async_status:
+    jid: "{{ clever_deploy.ansible_job_id }}"
+  register: job_result
+  until: job_result.finished
+  ignore_errors: true
+  delay: 30
+  retries: 80 # 40 minutes (80 * 30 secs delay)

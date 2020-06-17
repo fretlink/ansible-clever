@@ -17,7 +17,7 @@
     src: "{{ clever_repo }}/{{ clever_tools_archive }}"
     dest: "{{ ansible_env.HOME }}/{{ clever_user_path }}"
   vars:
-    clever_repo: https://clever-tools.cellar.services.clever-cloud.com/releases
+    clever_repo: https://clever-tools.clever-cloud.com/releases
     clever_tools_archive: "{{ clever_cli_version }}/clever-tools-{{ clever_cli_version }}_linux.tar.gz"
   when: clever_returned_version is failed or clever_returned_version.stdout != clever_cli_version
 
@@ -27,6 +27,5 @@
     dest: "{{ ansible_env.HOME }}/{{ clever_user_path }}/{{ item }}"
     mode: 0755
   with_items:
-    - clever-wait-deploy.sh
     - clever-set-domain.sh
     - clever-set-drain.sh

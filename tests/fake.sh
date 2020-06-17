@@ -4,7 +4,7 @@ binary="${0/*\/}"
 fakeCommit="aaa000aaa000aaa000aaa000aaa000aaa000aaa0"
 
 if [ "${binary}" = "clever" ] && [ "${1}" = "--version" ]; then
-    echo "1.6.3"
+    echo "2.6.1"
 elif [ "${binary}" = "clever" ] && [ "${1}" = "activity" ]; then
     echo "2020-02-02T20:20:02+02:00  OK         DEPLOY     ${fakeCommit}  Git"
 elif [ "${binary}" = "git" ]; then

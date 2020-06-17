@@ -1,6 +1,6 @@
 ---
 # defaults file for clever
-clever_cli_version: 1.6.3
+clever_cli_version: 2.6.1
 clever_user_path: .local/bin
 clever_app_root: "{{ app_root | default(playbook_dir + '/..') }}"
 clever_app_confdir: "{{ clever_app_root }}/.clever_cloud"

@@ -24,80 +24,45 @@
     CONFIGURATION_FILE: "{{ clever_login_file }}"
   changed_when: false
 
-#TODO: Improve ssh-key validation
-- name: Accept Clever-Cloud servers
-  shell: "ssh-keyscan -H push-par-clevercloud-customers.services.clever-cloud.com >> ~/.ssh/known_hosts"
-  tags:
-    - skip_ansible_lint
-
 - name: Deploy to Clever-Cloud
-  command: "git push --force git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/{{ clever_app }}.git HEAD:refs/heads/master"
-  args:
-    chdir: "{{ clever_app_root }}"
-  register: clever_deploy
-  ignore_errors: true
-  tags:
-    - skip_ansible_lint
-
-##################################################################
-# Re-deploy only if its the first clever deploy for that project #
-##################################################################
-
-- name: First time push to Clever-Cloud needs a full git clone
-  command: "git fetch --unshallow"
-  args:
-    chdir: "{{ clever_app_root }}"
-  when:
-    - clever_deploy is failed
-    - clever_deploy.stderr is defined
-    - clever_deploy.stderr is search("Failed to read git object")
-  tags:
-    - skip_ansible_lint
-
-- name: Deploy to Clever-Cloud
-  command: "git push --force git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/{{ clever_app }}.git HEAD:refs/heads/master"
-  args:
-    chdir: "{{ clever_app_root }}"
-  when:
-    - clever_deploy is failed
-    - clever_deploy.stderr is defined
-    - clever_deploy.stderr is search("Failed to read git object")
-  register: clever_deploy
-  tags:
-    - skip_ansible_lint
-
-##############################################################################
-# Poll deployment status from 'clever activity' command.                     #
-# 'clever deploy' command is not yet 100% reliable to get a blocking command #
-# until the deployment is over. Hence the need for a custom waiting script.  #
-##############################################################################
-
-- name: Watch deployment status
-  command: "{{ ansible_env.HOME }}/{{ clever_user_path }}/clever-wait-deploy.sh"
+  shell: "clever deploy --force"
   args:
     chdir: "{{ clever_app_root }}"
   environment:
     CONFIGURATION_FILE: "{{ clever_login_file }}"
   async: 2400 # 40 minutes
   poll: 0
-  register: long_command
-  changed_when: False
+  ignore_errors: true
+  register: clever_deploy
+  tags:
+    - skip_ansible_lint
 
 - name: Wait 40 minutes for deployment completion
   async_status:
-    jid: "{{ long_command.ansible_job_id }}"
+    jid: "{{ clever_deploy.ansible_job_id }}"
   register: job_result
   until: job_result.finished
   ignore_errors: true
   delay: 30
   retries: 80 # 40 minutes (80 * 30 secs delay)
 
-- name: Waiting script logs (stdout)
+##################################################################
+# Re-deploy only if its the first clever deploy for that project #
+##################################################################
+
+- name: Retry deploy to clever-cloud
+  include_tasks: redeploy.yml
+  when:
+    - not job_result.rc == 0
+    - job_result.stderr is defined
+    - job_result.stderr is search("Failed to read git object")
+
+- name: Deploy logs (stdout)
   debug:
     var: job_result.stdout_lines
   when: job_result.stdout_lines is defined
 
-- name: Waiting script logs (stderr)
+- name: Deploy error logs (stderr)
   debug:
     var: job_result.stderr_lines
   when: job_result.stderr_lines is defined

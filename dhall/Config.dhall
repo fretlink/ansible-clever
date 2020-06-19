@@ -15,6 +15,7 @@ let Config =
         , clever_disable_metrics : Bool
         , clever_addons : List Addon
         , clever_env : Environment
+        , clever_build_flavor : Optional Text
         }
 
 let mkConfig =
@@ -32,6 +33,7 @@ let mkConfig =
           , clever_disable_metrics = False
           , clever_addons = [] : List Addon
           , clever_env = {=}
+          , clever_build_flavor = None Text
           }
         : Config {}
 

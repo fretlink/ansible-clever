@@ -16,6 +16,14 @@
     DOMAIN: "{{ clever_domain | default(domain) }}"
     CONFIGURATION_FILE: "{{ clever_login_file }}"
 
+- name: Configure Build Instance
+  when: clever_build_flavor is defined
+  command: "clever scale --build-flavor {{ clever_build_flavor }}"
+  args:
+    chdir: "{{ clever_app_root }}"
+  environment:
+    CONFIGURATION_FILE: "{{ clever_login_file }}"
+
 - name: Push Environment
   shell: "clever env import --json < {{ clever_app_confdir }}/env"
   args:

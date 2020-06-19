@@ -18,11 +18,10 @@
 
 - name: Configure Build Instance
   when: clever_build_flavor is defined
-  command: "{{ ansible_env.HOME }}/{{ clever_user_path }}/clever-set-build-flavor.sh"
+  command: "clever scale --build-flavor {{ clever_build_flavor }}"
   args:
     chdir: "{{ clever_app_root }}"
   environment:
-    BUILD_FLAVOR: "{{ clever_build_flavor }}"
     CONFIGURATION_FILE: "{{ clever_login_file }}"
 
 - name: Push Environment

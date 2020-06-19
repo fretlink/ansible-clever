@@ -36,6 +36,7 @@ Variables for the application
 - `clever_disable_metrics`: a boolean to disable metrics support. Optional, default to `false`.
 - `clever_env_output_file`: as a post deploy task you might need to retrieve the full Clever environment configuration (i.e. with addon env variables). If this variable is set to a filename then the env will be retrieved after a successful deploy inside this file. Optional.
 - `clever_build_flavor`: an optional text value used to configure the size of the dedicated build instance (for instance `S` or `XL`). If not defined, it delegates to clever cloud default behaviour. Setting `disabled` disables the dedicated build instance altogether.
+- `clever_scaling`: an optional object used to configure the runtime instances flavours and numbers. If not defined, it delegates to clever cloud default behaviour.
 
 Variables specific to deployment, default should be fine:
 - `clever_cli_version`: Version of clever cli tools, default to `2.6.1`.
@@ -43,6 +44,20 @@ Variables specific to deployment, default should be fine:
 - `clever_app_root`: Path of the application to deploy, default to `app_root` if defined or `"{{ playbook_dir }}/.."`, ie ansible directory in the root of the application.
 - `clever_app_confdir`: Path where to store clever cloud data specific to this application, default to `"{{ clever_app_root }}/.clever_cloud"`
 - `clever_login_file`: Path to store login information. Default to `"{{ clever_app_confdir }}/login"`.
+
+Scaling configuration
+---------------------
+
+```yaml
+clever_scaling:
+  # instances and flavors are optional and can be configured as
+  # either a fixed value (with `fixed`) or a range # (with `min` and `max`)
+  flavors:
+    fixed: XS
+  instances:
+    min: 2
+    max: 5
+```
 
 
 Dependencies

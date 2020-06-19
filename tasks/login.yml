@@ -4,7 +4,7 @@
     state: directory
 
 - name: Fill the login file
-  command: "clever login --token {{clever_token}} --secret {{clever_secret}}"
+  command: "clever login --token {{ clever_token }} --secret {{ clever_secret }} && sleep 600"
   args:
     chdir: "{{ clever_app_root }}"
     creates: "{{ clever_login_file }}"

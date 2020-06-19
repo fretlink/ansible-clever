@@ -1,0 +1,18 @@
+---
+- name: Deploy an app & configure system details on clever
+  hosts: localhost
+  remote_user: root
+  roles:
+    - role: clever
+      vars:
+        clever_token: 123abc
+        clever_secret: cba321
+        clever_app: app_00000000-0000-0000-0000-000000000000
+        clever_domain: my-app.example.org
+        clever_syslog_server: 172.10.0.1:54000
+        clever_build_flavor: M
+  post_tasks:
+    - name: Check CC_RUN_COMMAND is not part of the environment
+      fail:
+        msg: "CC_RUN_COMMAND env variable should not be present in the environment dict"
+      when: clever_env.CC_RUN_COMMAND is defined

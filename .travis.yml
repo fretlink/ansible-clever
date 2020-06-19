@@ -19,8 +19,7 @@ install:
   - printf '[defaults]\nroles_path=../' >ansible.cfg
 
 script:
-  # Basic role syntax check
-  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+  # Basic role syntax check & linting
   - ansible-lint .
   - shellcheck **/*.sh
   - scripts/dhall_check.sh
@@ -28,7 +27,9 @@ script:
   - mkdir -p ~/.local/bin
   - cp tests/fake.sh ~/.local/bin/clever
   - cp tests/fake.sh ~/.local/bin/git
-  - ansible-playbook tests/test.yml -i tests/inventory
+  - ansible-playbook tests/test-simple-app.yml -i tests/inventory
+  - ansible-playbook tests/test-haskell-app.yml -i tests/inventory
+  - ansible-playbook tests/test-configure-app.yml -i tests/inventory
 
 notifications:
   slack: fretlink:pTIylIN7zkwRFuL3aHERmsbB

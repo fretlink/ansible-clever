@@ -1,0 +1,16 @@
+---
+- name: Deploy a Haskell app to clever
+  hosts: localhost
+  remote_user: root
+  roles:
+    - role: clever
+      vars:
+        clever_token: 123abc
+        clever_secret: cba321
+        clever_app: app_00000000-0000-0000-0000-000000000000
+        clever_haskell_entry_point: coucou-server
+  post_tasks:
+    - name: Check CC_RUN_COMMAND is present
+      fail:
+        msg: "CC_RUN_COMMAND env variable should be added for Haskell apps"
+      when: not clever_env.CC_RUN_COMMAND is defined

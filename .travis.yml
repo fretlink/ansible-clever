@@ -1,13 +1,12 @@
 ---
 sudo: false
 language: nix
-nix: 2.2.1
+nix: 2.3.4
 env:
-  - NIX_PATH=nixpkgs=channel:nixos-19.09
+  - NIX_PATH=nixpkgs=channel:nixos-20.03
 
 install:
-  - nix-env -iA pkgs.python37Packages.ansible-lint pkgs.python37Packages.ansible pkgs.shellcheck -f '<nixpkgs>'
-  - nix-env -if ./dhall-1.26.1.nix
+  - nix-env -i -f ./default.nix
 
   # Check ansible version
   - ansible --version

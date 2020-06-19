@@ -13,6 +13,7 @@ It handles the publication over git, as well as domain names, environment variab
 Requirements
 ------------
 
+This role requires `clever-tools` version `2.6.1` or higher.
 
 Role Variables
 --------------

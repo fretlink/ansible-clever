@@ -7,6 +7,7 @@ clever_app_confdir: "{{ clever_app_root }}/.clever_cloud"
 clever_login_file: "{{ clever_app_confdir }}/login"
 
 clever_haskell_entry_point: "{{ clever_entry_point | default(None) }}"
+clever_haskell_env: {}
 clever_env: {}
 
 clever_disable_metrics: false

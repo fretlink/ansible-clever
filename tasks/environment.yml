@@ -1,3 +1,13 @@
+- name: Setup haskell-specific environment variables
+  set_fact:
+    clever_haskell_env:
+      CC_RUN_COMMAND: "~/.local/bin/{{ clever_haskell_entry_point }}"
+  when: clever_haskell_entry_point is defined
+
+- name: Assemble full environment
+  set_fact:
+    clever_env: "{{ clever_base_env | combine(clever_haskell_env) | combine(clever_env) }}"
+
 - name: Create environment file
   template:
     src: env.j2

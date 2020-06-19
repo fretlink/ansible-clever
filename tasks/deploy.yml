@@ -17,7 +17,7 @@
     CONFIGURATION_FILE: "{{ clever_login_file }}"
 
 - name: Push Environment
-  shell: "clever env import < {{ clever_app_confdir }}/env"
+  shell: "clever env import --json < {{ clever_app_confdir }}/env"
   args:
     chdir: "{{ clever_app_root }}"
   environment:

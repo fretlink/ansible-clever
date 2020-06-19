@@ -4,9 +4,10 @@
     state: directory
 
 - name: Fill the login file
-  template:
-    src: cleverlogin.j2
-    dest: "{{ clever_login_file }}"
+  command: "clever login --token {{clever_token}} --secret {{clever_secret}}"
+  args:
+    chdir: "{{ clever_app_root }}"
+    creates: "{{ clever_login_file }}"
   no_log: true
 
 - name: Make sure no apps are already linked

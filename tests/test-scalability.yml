@@ -1,0 +1,37 @@
+---
+- name: Configure scalability (fixed instances and ranged flavors)
+  hosts: localhost
+  remote_user: root
+  roles:
+    - role: clever
+      vars:
+        clever_token: 123abc
+        clever_secret: cba321
+        clever_app: app_00000000-0000-0000-0000-000000000000
+        clever_scaling:
+          instances: { fixed: 1 }
+          flavors: { min: "nano", max: "XS" }
+
+- name: Configure scalability (no instances and ranged flavors)
+  hosts: localhost
+  remote_user: root
+  roles:
+    - role: clever
+      vars:
+        clever_token: 123abc
+        clever_secret: cba321
+        clever_app: app_00000000-0000-0000-0000-000000000000
+        clever_scaling:
+          flavors: { min: "nano", max: "XS" }
+
+- name: Configure scalability (incomplete flavors)
+  hosts: localhost
+  remote_user: root
+  roles:
+    - role: clever
+      vars:
+        clever_token: 123abc
+        clever_secret: cba321
+        clever_app: app_00000000-0000-0000-0000-000000000000
+        clever_scaling:
+          flavors: { min: "nano" }

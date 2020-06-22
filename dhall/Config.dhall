@@ -2,6 +2,20 @@ let Addon = (./Addon.dhall).Type
 
 let Vault = ./Vault.dhall
 
+let FixedOrRange =
+      λ(t : Type) → < Fixed : { fixed : t } | Range : { min : t, max : t } >
+
+let fixed = λ(t : Type) → λ(f : t) → (FixedOrRange t).Fixed { fixed = f }
+
+let range = λ(t : Type) → λ(r : { min : t, max : t }) → (FixedOrRange t).Range r
+
+let InstancesConfig = FixedOrRange Natural
+
+let FlavorsConfig = FixedOrRange Text
+
+let ScalingParameters =
+      { flavor : Optional FlavorsConfig, instances : Optional InstancesConfig }
+
 let Config =
         λ(Environment : Type)
       → { clever_app : Text
@@ -16,6 +30,7 @@ let Config =
         , clever_addons : List Addon
         , clever_env : Environment
         , clever_build_flavor : Optional Text
+        , clever_scaling : Optional ScalingParameters
         }
 
 let mkConfig =
@@ -34,7 +49,15 @@ let mkConfig =
           , clever_addons = [] : List Addon
           , clever_env = {=}
           , clever_build_flavor = None Text
+          , clever_scaling = None ScalingParameters
           }
         : Config {}
 
-in  { Type = Config, mkConfig = mkConfig }
+in  { Type = Config
+    , mkConfig = mkConfig
+    , ScalingParameters = ScalingParameters
+    , InstancesConfig = InstancesConfig
+    , FlavorsConfig = FlavorsConfig
+    , fixed = fixed
+    , range = range
+    }

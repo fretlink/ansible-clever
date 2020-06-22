@@ -24,13 +24,22 @@
 
 - name: Deploy app
   import_tasks: deploy.yml
+  when: not clever_restart_only is defined or not clever_restart_only
   tags:
     - clever
     - clever-deploy
 
 - name: Post deploy tasks
   import_tasks: post_deploy.yml
+  when: not clever_restart_only is defined or not clever_restart_only
   tags:
     - clever
     - clever-deploy
     - clever-env
+
+- name: Restart app
+  import_tasks: restart.yml
+  when: clever_restart_only is defined and clever_restart_only
+  tags:
+    - clever
+    - clever-restart

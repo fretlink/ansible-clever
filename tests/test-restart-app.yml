@@ -1,0 +1,11 @@
+---
+- name: Restart app on clever
+  hosts: localhost
+  remote_user: root
+  roles:
+    - role: clever
+      vars:
+        clever_token: 123abc
+        clever_secret: cba321
+        clever_app: app_00000000-0000-0000-0000-000000000000
+        clever_restart_only: true

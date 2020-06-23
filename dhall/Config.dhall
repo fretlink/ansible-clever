@@ -31,6 +31,7 @@ let Config =
         , clever_env : Environment
         , clever_build_flavor : Optional Text
         , clever_scaling : Optional ScalingParameters
+        , clever_restart_only : Optional Bool
         }
 
 let mkConfig =
@@ -50,6 +51,7 @@ let mkConfig =
           , clever_env = {=}
           , clever_build_flavor = None Text
           , clever_scaling = None ScalingParameters
+          , clever_restart_only = None Bool
           }
         : Config {}
 

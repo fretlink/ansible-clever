@@ -35,13 +35,14 @@ Variables for the application:
 - `clever_build_flavor`: an optional text value used to configure the size of the dedicated build instance (for instance `S` or `XL`). If not defined, it delegates to clever cloud default behaviour. Setting `disabled` disables the dedicated build instance altogether.
 - `clever_scaling`: an optional object used to configure the runtime instances flavours and numbers. If not defined, it delegates to clever cloud default behaviour.
 
-Variables specific to deployment, default should be fine:
+Variables specific to deployment, defaults should be fine:
 
 - `clever_cli_version`: Version of clever cli tools, default to `2.6.1`.
 - `clever_user_path`: Path relative to ansible_user home dir where cli tools and helpers are installed default to `.local/bin`.
 - `clever_app_root`: Path of the application to deploy, default to `app_root` if defined or `"{{ playbook_dir }}/.."` otherwise. I.e. the default behavior will work fine if you define a playbook using this role in a one level deep directory (e.g. `deployment/`) of the root of the application.
 - `clever_app_confdir`: Path where to store clever cloud data specific to this application, default to `"{{ clever_app_root }}/.clever_cloud"`
 - `clever_login_file`: Path to store login information. Default to `"{{ clever_app_confdir }}/login"`.
+- `clever_restart_only`: set to `true` to skip any deployment related tasks (domain, scaling, env, deploy, …) and only restart the application. Optional.
 
 Variables specific to Haskell applications:
 

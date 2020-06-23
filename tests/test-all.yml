@@ -1,0 +1,6 @@
+---
+- import_playbook: ./test-simple-app.yml
+- import_playbook: ./test-configure-app.yml
+- import_playbook: ./test-haskell-app.yml
+- import_playbook: ./test-scalability.yml
+- import_playbook: ./test-restart-app.yml

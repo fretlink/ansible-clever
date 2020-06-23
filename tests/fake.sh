@@ -10,5 +10,6 @@ elif [ "${binary}" = "clever" ] && [ "${1}" = "activity" ]; then
 elif [ "${binary}" = "git" ]; then
     echo "${fakeCommit}"
 else
+    echo "${1}" >> "${binary}-commands"
     echo "${binary} called with arguments: ${*}"
 fi

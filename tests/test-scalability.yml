@@ -15,6 +15,10 @@
 - name: Configure scalability (no instances and ranged flavors)
   hosts: localhost
   remote_user: root
+  pre_tasks:
+    - file:
+        state: absent
+        path: ../clever-commands
   roles:
     - role: clever
       vars:
@@ -23,6 +27,29 @@
         clever_app: app_00000000-0000-0000-0000-000000000000
         clever_scaling:
           flavors: { min: "nano", max: "XS" }
+  post_tasks:
+    - name: Check stubbed commands
+      command: "{{ item.cmd }}"
+      ignore_errors: true
+      vars:
+        display: "{{ item.display }}"
+      with_list:
+        - cmd: "grep deploy ../clever-commands"
+          display: "Expected 'clever deploy' command to be called"
+        - cmd: "grep scale ../clever-commands"
+          display: "Expected 'clever scale' command to be called"
+        - cmd: "grep -v restart ../clever-commands"
+          display: "Expected 'clever restart' command to NOT be called"
+      register: tests_results
+    - name: show results
+      debug:
+        msg:
+          - "failed_results: {{ failed_results }}"
+          - "success_results: {{ success_results }}"
+      failed_when: tests_results is failed
+      vars:
+        failed_results: "{{ tests_results.results | selectattr('failed') | map(attribute='item.display') | list }}"
+        success_results: "{{ tests_results.results | rejectattr('failed') | map(attribute='item.display') | list }}"
 
 - name: Configure scalability (incomplete flavors)
   hosts: localhost

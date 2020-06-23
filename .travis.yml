@@ -26,10 +26,7 @@ script:
   - mkdir -p ~/.local/bin
   - cp tests/fake.sh ~/.local/bin/clever
   - cp tests/fake.sh ~/.local/bin/git
-  - ansible-playbook tests/test-simple-app.yml -i tests/inventory
-  - ansible-playbook tests/test-haskell-app.yml -i tests/inventory
-  - ansible-playbook tests/test-configure-app.yml -i tests/inventory
-  - ansible-playbook tests/test-scalability.yml -i tests/inventory
+  - ansible-playbook -i tests/inventory tests/test-all.yml
 
 notifications:
   slack: fretlink:pTIylIN7zkwRFuL3aHERmsbB

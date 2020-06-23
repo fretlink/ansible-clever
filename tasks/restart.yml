@@ -1,0 +1,22 @@
+---
+- name: Restart app on Clever-Cloud
+  shell: "clever restart"
+  args:
+    chdir: "{{ clever_app_root }}"
+  environment:
+    CONFIGURATION_FILE: "{{ clever_login_file }}"
+  async: 300 # 5 minutes
+  poll: 0
+  ignore_errors: true
+  register: clever_deploy
+  tags:
+    - skip_ansible_lint
+
+- name: Wait up to 5 minutes for restart completion
+  async_status:
+    jid: "{{ clever_deploy.ansible_job_id }}"
+  register: job_result
+  until: job_result.finished
+  ignore_errors: true
+  delay: 30
+  retries: 10 # 5 minutes (10 * 30 secs delay)

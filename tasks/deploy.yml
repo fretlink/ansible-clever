@@ -47,7 +47,7 @@
   changed_when: false
 
 - name: Deploy to Clever-Cloud
-  shell: "clever deploy --force"
+  command: "{{ ansible_env.HOME }}/{{ clever_user_path }}/clever-deploy.sh"
   args:
     chdir: "{{ clever_app_root }}"
   environment:

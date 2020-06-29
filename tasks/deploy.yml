@@ -75,7 +75,7 @@
 - name: Retry deploy to clever-cloud
   include_tasks: redeploy.yml
   when:
-    - not job_result.rc == 0
+    - not job_result.finished or not job_result.rc == 0
     - job_result.stderr is defined
     - job_result.stderr is search("Failed to read git object")
 

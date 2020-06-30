@@ -1,5 +1,5 @@
 ---
-- name: Restart app on clever
+- name: Do nothing if the app is up-to-date on clever
   hosts: localhost
   remote_user: root
   pre_tasks:
@@ -12,20 +12,17 @@
         clever_token: 123abc
         clever_secret: cba321
         clever_app: app_00000000-0000-0000-0000-000000000000
-        clever_restart_only: true
+      environment:
+        PRETEND_REMOTE_COMMIT: aaa000aaa000aaa000aaa000aaa000aaa000aaa0
   post_tasks:
     - name: Check stubbed commands
       shell: "{{ item.cmd }}"
       ignore_errors: true
-      vars:
-        display: "{{ item.display }}"
       with_list:
-        - cmd: "grep restart ../clever-commands"
-          display: "Expected 'clever restart' command to be called"
         - cmd: "! grep deploy ../clever-commands"
           display: "Expected 'clever deploy' command to NOT be called"
-        - cmd: "! grep scale ../clever-commands"
-          display: "Expected 'clever scale' command to NOT be called"
+      vars:
+        display: "{{ item.display }}"
       register: tests_results
     - name: show results
       debug:

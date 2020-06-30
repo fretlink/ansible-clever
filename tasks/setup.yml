@@ -27,6 +27,7 @@
     dest: "{{ ansible_env.HOME }}/{{ clever_user_path }}/{{ item }}"
     mode: 0755
   with_items:
+    - clever-deploy.sh
     - clever-set-domain.sh
     - clever-set-drain.sh
     - clever-set-scalability.sh

@@ -29,7 +29,7 @@
           flavors: { min: "nano", max: "XS" }
   post_tasks:
     - name: Check stubbed commands
-      command: "{{ item.cmd }}"
+      shell: "{{ item.cmd }}"
       ignore_errors: true
       vars:
         display: "{{ item.display }}"
@@ -38,7 +38,7 @@
           display: "Expected 'clever deploy' command to be called"
         - cmd: "grep scale ../clever-commands"
           display: "Expected 'clever scale' command to be called"
-        - cmd: "grep -v restart ../clever-commands"
+        - cmd: "! grep restart ../clever-commands"
           display: "Expected 'clever restart' command to NOT be called"
       register: tests_results
     - name: show results

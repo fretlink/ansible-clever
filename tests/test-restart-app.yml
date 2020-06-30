@@ -15,16 +15,16 @@
         clever_restart_only: true
   post_tasks:
     - name: Check stubbed commands
-      command: "{{ item.cmd }}"
+      shell: "{{ item.cmd }}"
       ignore_errors: true
       vars:
         display: "{{ item.display }}"
       with_list:
         - cmd: "grep restart ../clever-commands"
           display: "Expected 'clever restart' command to be called"
-        - cmd: "grep -v deploy ../clever-commands"
+        - cmd: "! grep deploy ../clever-commands"
           display: "Expected 'clever deploy' command to NOT be called"
-        - cmd: "grep -v scale ../clever-commands"
+        - cmd: "! grep scale ../clever-commands"
           display: "Expected 'clever scale' command to NOT be called"
       register: tests_results
     - name: show results

@@ -13,6 +13,7 @@ elif [ "${binary}" = "clever" ] && [ "${1}" = "status" ]; then
 elif [ "${binary}" = "git" ]; then
     echo "${localCommit}"
 else
-    echo "${1}" >> "${binary}-commands"
     echo "${binary} called with arguments: ${*}"
 fi
+
+echo "${1}" >> "${binary}-commands"

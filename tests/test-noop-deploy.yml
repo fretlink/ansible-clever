@@ -1,0 +1,35 @@
+---
+- name: Do nothing if the app is up-to-date on clever
+  hosts: localhost
+  remote_user: root
+  pre_tasks:
+    - file:
+        state: absent
+        path: ../clever-commands
+  roles:
+    - role: clever
+      vars:
+        clever_token: 123abc
+        clever_secret: cba321
+        clever_app: app_00000000-0000-0000-0000-000000000000
+      environment:
+        PRETEND_REMOTE_COMMIT: aaa000aaa000aaa000aaa000aaa000aaa000aaa0
+  post_tasks:
+    - name: Check stubbed commands
+      shell: "{{ item.cmd }}"
+      ignore_errors: true
+      with_list:
+        - cmd: "! grep deploy ../clever-commands"
+          display: "Expected 'clever deploy' command to NOT be called"
+      vars:
+        display: "{{ item.display }}"
+      register: tests_results
+    - name: show results
+      debug:
+        msg:
+          - "failed_results: {{ failed_results }}"
+          - "success_results: {{ success_results }}"
+      failed_when: tests_results is failed
+      vars:
+        failed_results: "{{ tests_results.results | selectattr('failed') | map(attribute='item.display') | list }}"
+        success_results: "{{ tests_results.results | rejectattr('failed') | map(attribute='item.display') | list }}"

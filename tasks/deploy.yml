@@ -38,6 +38,12 @@
     MIN_FLAVOR: "{{ clever_scaling.flavor.min | default('') }}"
     MAX_FLAVOR: "{{ clever_scaling.flavor.max | default('') }}"
 
+- name: Configure service dependencies
+  include_tasks: service-dep.yml
+  vars:
+    service_dep: "{{ item }}"
+  with_items: "{{ clever_service_dependencies }}"
+
 - name: Push Environment
   shell: "clever env import --json < {{ clever_app_confdir }}/env"
   args:

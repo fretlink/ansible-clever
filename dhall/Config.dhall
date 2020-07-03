@@ -1,5 +1,7 @@
 let Addon = (./Addon.dhall).Type
 
+let ServiceDependency = (./ServiceDependency.dhall).Type
+
 let Vault = ./Vault.dhall
 
 let FixedOrRange =
@@ -28,6 +30,7 @@ let Config =
         , clever_haskell_entry_point : Optional Text
         , clever_disable_metrics : Bool
         , clever_addons : List Addon
+        , clever_service_dependencies : List ServiceDependency
         , clever_env : Environment
         , clever_build_flavor : Optional Text
         , clever_scaling : Optional ScalingParameters
@@ -48,6 +51,7 @@ let mkConfig =
           , clever_haskell_entry_point = None Text
           , clever_disable_metrics = False
           , clever_addons = [] : List Addon
+          , clever_service_dependencies = [] : List ServiceDependency
           , clever_env = {=}
           , clever_build_flavor = None Text
           , clever_scaling = None ScalingParameters

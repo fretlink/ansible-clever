@@ -1,18 +1,4 @@
-- name: Gather addon information for {{ addon.name }} (clever --version < 1.5.0)
-  shell: >
-    set -o pipefail &&
-    clever env | grep {{ addon.env_prefix }}
-    | sed -e 's/{{ addon.env_prefix }}_//' -e 's/=/: \"/' -e 's/$/\"/'
-    > {{ clever_app_confdir }}/{{ addon.name }}_env.yml
-  args:
-    chdir: "{{ clever_app_root }}"
-    executable: "bash"
-  environment:
-    CONFIGURATION_FILE: "{{ clever_login_file }}"
-  changed_when: False
-  when: clever_returned_version.stdout is version('1.5.0', '<')
-
-- name: Gather addon information for {{ addon.name }} (clever --version >= 1.5.0)
+- name: Gather addon information for {{ addon.name }}
   shell: >
     set -o pipefail &&
     clever env | grep {{ addon.env_prefix }}
@@ -24,7 +10,6 @@
   environment:
     CONFIGURATION_FILE: "{{ clever_login_file }}"
   changed_when: False
-  when: clever_returned_version.stdout is version('1.5.0', '>=')
 
 - name: Include addon var for {{ addon.name }}
   include_vars:

@@ -34,6 +34,8 @@ Variables for the application:
 - `clever_env_output_file`: as a post deploy task you might need to retrieve the full Clever environment configuration (i.e. with addon env variables). If this variable is set to a filename then the env will be retrieved after a successful deploy and written to this file. Beware, the resulting file will contain sensitive information (addon passwords, …). Optional.
 - `clever_build_flavor`: an optional text value used to configure the size of the dedicated build instance (for instance `S` or `XL`). If not defined, it delegates to clever cloud default behaviour. Setting `disabled` disables the dedicated build instance altogether.
 - `clever_scaling`: an optional object used to configure the runtime instances flavours and numbers. If not defined, it delegates to clever cloud default behaviour.
+- `clever_service_dependencies`: a list of the service dependencies needed by the application (each service being a dict containing either an `app_id` field, or an `addon_id` field), optional.<br/>
+  Example: `[{ addon_id: addon_00000000-0000-0000-0000-000000000000 }, { app_id: app_00000000-0000-0000-0000-000000000000 }]`
 
 Variables specific to deployment, defaults should be fine:
 

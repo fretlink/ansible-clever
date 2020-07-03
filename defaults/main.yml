@@ -15,4 +15,10 @@ clever_addons: []
 # example
 # clever_addons:
 #   - name: pg
-#   - env_prefix: POSTGRESQL_ADDON
+#     env_prefix: POSTGRESQL_ADDON
+
+clever_service_dependencies: []
+# example
+# clever_service_dependencies:
+#   - addon_id: addon_00000000-0000-0000-0000-000000000000
+#   - app_id: app_00000000-0000-0000-0000-000000000000

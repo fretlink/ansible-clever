@@ -1,0 +1,17 @@
+- name: Make sure addon {{ service_dep.addon_id }} is linked
+  shell: >
+    clever service link-addon {{ service_dep.addon_id }}
+  args:
+    chdir: "{{ clever_app_root }}"
+  environment:
+    CONFIGURATION_FILE: "{{ clever_login_file }}"
+  when: service_dep.addon_id is defined
+
+- name: Make sure app {{ service_dep.app_id }} is linked
+  shell: >
+    clever service link-app {{ service_dep.app_id }}
+  args:
+    chdir: "{{ clever_app_root }}"
+  environment:
+    CONFIGURATION_FILE: "{{ clever_login_file }}"
+  when: service_dep.app_id is defined

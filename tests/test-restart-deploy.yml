@@ -1,0 +1,37 @@
+---
+- name: Launch a restart when commit is already up-to-date on clever
+  hosts: localhost
+  remote_user: root
+  pre_tasks:
+    - file:
+        state: absent
+        path: ../clever-commands
+  roles:
+    - role: clever
+      vars:
+        clever_token: 123abc
+        clever_secret: cba321
+        clever_app: app_00000000-0000-0000-0000-000000000000
+      environment:
+        DEPLOY_UP_TO_DATE_APP: true
+  post_tasks:
+    - name: Check stubbed commands
+      shell: "{{ item.cmd }}"
+      ignore_errors: true
+      with_list:
+        - cmd: "grep deploy ../clever-commands"
+          display: "Expected 'clever deploy' command to be called"
+        - cmd: "grep restart ../clever-commands"
+          display: "Expected 'clever restart' command to be called"
+      vars:
+        display: "{{ item.display }}"
+      register: tests_results
+    - name: show results
+      debug:
+        msg:
+          - "failed_results: {{ failed_results }}"
+          - "success_results: {{ success_results }}"
+      failed_when: tests_results is failed
+      vars:
+        failed_results: "{{ tests_results.results | selectattr('failed') | map(attribute='item.display') | list }}"
+        success_results: "{{ tests_results.results | rejectattr('failed') | map(attribute='item.display') | list }}"

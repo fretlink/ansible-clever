@@ -85,6 +85,13 @@
     - job_result.stderr is defined
     - job_result.stderr is search("Failed to read git object")
 
+- name: Restart app on clever-cloud when error asks to restart
+  include_tasks: restart.yml
+  when:
+    - not job_result.finished or not job_result.rc == 0
+    - job_result.stderr is defined
+    - job_result.stderr is search("clever restart")
+
 - name: Deploy logs (stdout)
   debug:
     var: job_result.stdout_lines

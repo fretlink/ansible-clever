@@ -3,6 +3,7 @@
 - import_playbook: ./test-configure-app.yml
 - import_playbook: ./test-haskell-app.yml
 - import_playbook: ./test-noop-deploy.yml
+- import_playbook: ./test-restart-deploy.yml
 - import_playbook: ./test-scalability.yml
 - import_playbook: ./test-service-deps.yml
 - import_playbook: ./test-restart-app.yml

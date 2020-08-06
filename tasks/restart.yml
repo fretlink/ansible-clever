@@ -1,6 +1,13 @@
 ---
+- name: Get current HEAD commit revision
+  command: "git rev-parse HEAD" # noqa 303
+  register: git_head_revision
+  args:
+    chdir: "{{ clever_app_root }}"
+  changed_when: false
+
 - name: Restart app on Clever-Cloud
-  shell: "clever restart"
+  shell: "clever restart --commit {{ git_head_revision.stdout_lines | first }}"
   args:
     chdir: "{{ clever_app_root }}"
   environment:

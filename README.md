@@ -13,7 +13,7 @@ Requirements
 
 This role requires [`clever-tools`](https://github.com/CleverCloud/clever-tools) CLI version `2.6.1` or higher.
 
-If you want to configure this role with [Dhall](https://dhall-lang.org/) instead of YAML, the dhall bindings defined in the `dhall/` directory will need Dhall version `1.26.0` or higher.
+If you want to configure this role with [Dhall](https://dhall-lang.org/) instead of YAML, the role publishes dhall bindings defined in the `dhall/package.dhall` file. These bindings will need Dhall version `1.26.0` or higher.
 
 Role Variables
 --------------
@@ -37,11 +37,11 @@ Variables for the application:
 - `clever_service_dependencies`: a list of the service dependencies needed by the application (each service being a dict containing either an `app_id` field, or an `addon_id` field), optional.<br/>
   Example: `[{ addon_id: addon_00000000-0000-0000-0000-000000000000 }, { app_id: app_00000000-0000-0000-0000-000000000000 }]`
 
-Variables specific to deployment, defaults should be fine:
+Variables **specific to deployment**, defaults should be fine:
 
+- `clever_app_root`: Path of the application to deploy, default to `app_root` if defined or `"{{ playbook_dir }}/.."` otherwise. I.e. the default behaviour will work fine if you define a playbook using this role within a directory (e.g. `deployment/` located at the root of the application.
 - `clever_cli_version`: Version of clever cli tools, default to `2.6.1`.
 - `clever_user_path`: Path relative to ansible_user home dir where cli tools and helpers are installed default to `.local/bin`.
-- `clever_app_root`: Path of the application to deploy, default to `app_root` if defined or `"{{ playbook_dir }}/.."` otherwise. I.e. the default behavior will work fine if you define a playbook using this role in a one level deep directory (e.g. `deployment/`) of the root of the application.
 - `clever_app_confdir`: Path where to store clever cloud data specific to this application, default to `"{{ clever_app_root }}/.clever_cloud"`
 - `clever_login_file`: Path to store login information. Default to `"{{ clever_app_confdir }}/login"`.
 - `clever_restart_only`: set to `true` to skip any deployment related tasks (domain, scaling, env, deploy, …) and only restart the application. Optional.
@@ -72,7 +72,7 @@ None
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+This is the most basic usage of the role by specifying at least the clever app id and a clever token & secret pair.
 
     - hosts: localhost
       roles:
@@ -82,6 +82,16 @@ Including an example of how to use your role (for instance, with variables passe
              clever_token: "{{ vault_clever_token }}",
              clever_secret: "{{ vault_clever_secret}}"
 
+If you only need a task to restart your clever application, this would be enough:
+
+    - hosts: localhost
+      roles:
+         - role: fretlink.clever,
+           vars:
+             clever_app: app_00000000-0000-0000-0000-000000000000,
+             clever_token: "{{ vault_clever_token }}",
+             clever_secret: "{{ vault_clever_secret}}"
+             clever_restart_only: true
 
 Tests
 ----
@@ -91,9 +101,9 @@ The role is tested with automated continuous integration on Travis. Please check
 License
 -------
 
-BSD
+MIT (see LICENSE file for details)
 
 Author Information
 ------------------
 
-Developped at Fretlink (https://www.fretlink.com)
+Developed at [Fretlink](https://tech.fretlink.com)

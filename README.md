@@ -39,7 +39,7 @@ Variables for the application:
 
 Variables **specific to deployment**, defaults should be fine:
 
-- `clever_app_root`: Path of the application to deploy, default to `app_root` if defined or `"{{ playbook_dir }}/.."` otherwise. I.e. the default behaviour will work fine if you define a playbook using this role in a one level deep directory (e.g. `deployment/`) of the root of the application.
+- `clever_app_root`: Path of the application to deploy, default to `app_root` if defined or `"{{ playbook_dir }}/.."` otherwise. I.e. the default behaviour will work fine if you define a playbook using this role within a directory (e.g. `deployment/` located at the root of the application.
 - `clever_cli_version`: Version of clever cli tools, default to `2.6.1`.
 - `clever_user_path`: Path relative to ansible_user home dir where cli tools and helpers are installed default to `.local/bin`.
 - `clever_app_confdir`: Path where to store clever cloud data specific to this application, default to `"{{ clever_app_root }}/.clever_cloud"`

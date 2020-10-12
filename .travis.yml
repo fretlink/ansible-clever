@@ -1,5 +1,4 @@
 ---
-sudo: false
 language: nix
 nix: 2.3.4
 env:
@@ -34,5 +33,10 @@ script:
   - ansible-playbook -i tests/inventory tests/test-all.yml
 
 notifications:
-  slack: fretlink:pTIylIN7zkwRFuL3aHERmsbB
+  slack:
+    rooms:
+      - secure: PdkqC047GvDF8RB4TN5iT5WqffzhViUU1YZsGMdd0/mH2tylqe8VuaFvIHSNJlFxgUHvEktkRy6Jn6gpkHysKMrHDK99fvPB/v2m/88eze1pI1zsXlgdaHZ7GOgxx5iqG/o+F/3MA0jInwExzUmSpojkrdGqsxyr9G9/tktj3E8d2udQJbiNwaxhVGO3fsgqKK2bQLpuVEGjNVCfzp3DfsQ0lAn/75k2+cHdEIIBTBC/8cuZle+WULiL4+0/bxcpD/Dlo76IDOcyiyimCyC22EJSvdYq7JdMdNDBuG81hq0HyeOMqeYpGufiaksuw1T7AfzrgMkstKbUzyMJlt9Le6ezbTOQc3Xy06d9v0BiZRlT0sHF/QRZR906pfdLmWfFluPQYwsH6K+dJob+MD/2alJDBvlEpnyKDPyDChys1G+Xh+EWLClDREgrE7TNwWkfW1sTvILPoqdcIPfOJCnJvvs14sJseymhJ7X9puuvJt481LCCitBDLRtiB7Ht5c5KBQfvsyT1h0n4rVfIVxEAubM0mCng7Xc9yUICxM/udQE1ra0UAUHGUpIqv/S9lmmvic7c3PK0+0p8hBU/98Fv7M6KMS+SjDMrNSCglUd17RHsIl6lji7npzprcwF/SZjKQ8KfFjN00VWMEj/pUzpBOv5ihUZi1Il5lh5jynXtQao=
+    on_success: change # default: always
+    on_failure: always # default: always
+    on_pull_requests: false
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

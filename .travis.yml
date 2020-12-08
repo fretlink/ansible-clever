@@ -2,7 +2,7 @@
 language: nix
 nix: 2.3.4
 env:
-  - CUSTOM_NIX_PATH=nixpkgs=channel:nixos-20.03
+  - CUSTOM_NIX_PATH=nixpkgs=channel:nixos-20.09
 
 # Travis nix integration will install nix AFTER the environment variables are set
 # and the nix installer will overide NIX_PATH variable thus we need to re-export it

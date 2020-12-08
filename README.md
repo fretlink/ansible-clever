@@ -13,7 +13,7 @@ Requirements
 
 This role requires [`clever-tools`](https://github.com/CleverCloud/clever-tools) CLI version `2.6.1` or higher.
 
-If you want to configure this role with [Dhall](https://dhall-lang.org/) instead of YAML, the role publishes dhall bindings defined in the `dhall/package.dhall` file. These bindings will need Dhall version `1.26.0` or higher.
+If you want to configure this role with [Dhall](https://dhall-lang.org/) instead of YAML, the role publishes dhall bindings defined in the `dhall/package.dhall` file. These bindings will need Dhall version `1.29.0` or higher.
 
 Role Variables
 --------------

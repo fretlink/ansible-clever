@@ -3,9 +3,8 @@
 with pkgs;
 {
   inherit shellcheck
-          ansible_2_8;
-  inherit (python37Packages)
+          ansible_2_8
+          dhall;
+  inherit (python3Packages)
           ansible-lint;
-  inherit (haskellPackages)
-          dhall_1_27_0;
 }

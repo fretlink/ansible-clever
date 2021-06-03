@@ -58,21 +58,21 @@
     chdir: "{{ clever_app_root }}"
   environment:
     CONFIGURATION_FILE: "{{ clever_login_file }}"
-  async: 2400 # 40 minutes
+  async: 3600 # 1 hour
   poll: 0
   ignore_errors: true
   register: clever_deploy
   tags:
     - skip_ansible_lint
 
-- name: Wait up to 40 minutes for deployment completion
+- name: Wait up to 1 hour for deployment completion
   async_status:
     jid: "{{ clever_deploy.ansible_job_id }}"
   register: job_result
   until: job_result.finished
   ignore_errors: true
   delay: 30
-  retries: 80 # 40 minutes (80 * 30 secs delay)
+  retries: 120 # 1 hour (120 * 30 secs delay)
 
 ##################################################################
 # Re-deploy only if its the first clever deploy for that project #

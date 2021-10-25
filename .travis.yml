@@ -1,6 +1,6 @@
 ---
 language: nix
-nix: 2.3.4
+nix: 2.3.6
 env:
   - CUSTOM_NIX_PATH=nixpkgs=channel:nixos-20.09
 
